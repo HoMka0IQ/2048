@@ -15,6 +15,12 @@ public class PlayerInputController : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float maxDragDistance = 3f;
 
+    [SerializeField] private float minLaunchForce = 5f;
+    [SerializeField] private float maxLaunchForce = 20f;
+    [SerializeField] private float dragSensitivity = 0.02f;
+
+    private Vector2 dragStartPosition;
+
     private Plane dragPlane;
     private Vector3 dragStartWorld;
     private bool isDragging;
@@ -76,7 +82,7 @@ public class PlayerInputController : MonoBehaviour
     {
         if (!TryGetWorldPoint(screenPosition, out dragStartWorld))
             return;
-
+        dragStartPosition = screenPosition;
         isDragging = true;
     }
 
@@ -91,15 +97,21 @@ public class PlayerInputController : MonoBehaviour
         if (currentCube == null)
             return;
 
+        //arrow visualizer
+        float launchForce = GetLounchForce(screenPosition);
+
+        launchVisualizer.ShowArrowLine(
+            currentCube.transform.position
+            , Mathf.InverseLerp(minLaunchForce, maxLaunchForce, launchForce)
+        );
+
+        //cube movement
         float deltaX = worldPoint.x - dragStartWorld.x;
         deltaX = Mathf.Clamp(deltaX, -maxDragDistance, maxDragDistance);
 
         Vector3 targetPosition = new Vector3(deltaX, playerCubePoint.position.y, playerCubePoint.position.z);
 
         currentCube.Launcher.SetHorizontalOffset(targetPosition);
-
-        if (launchVisualizer != null)
-            launchVisualizer.ShowArrowLine(currentCube.transform.position);
     }
 
 
@@ -117,7 +129,9 @@ public class PlayerInputController : MonoBehaviour
         if (currentCube == null)
             return;
 
-        currentCube.Launcher.Launch(1);
+        float launchForce = GetLounchForce(screenPosition);
+
+        currentCube.Launcher.Launch(launchForce);
 
         Invoke(nameof(InitCube), 1f);
 
@@ -126,7 +140,14 @@ public class PlayerInputController : MonoBehaviour
 
         currentCube = null;
     }
+    public float GetLounchForce(Vector2 screenPosition)
+    {
+        float verticalDrag = Mathf.Max(0, screenPosition.y - dragStartPosition.y);
 
+        float normalized = verticalDrag * dragSensitivity;
+
+        return Mathf.Clamp(normalized, minLaunchForce, maxLaunchForce);
+    }
     private bool TryGetWorldPoint(Vector2 screenPosition, out Vector3 worldPoint)
     {
         Ray ray = _camera.ScreenPointToRay(screenPosition);

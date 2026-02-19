@@ -2316,6 +2316,9 @@ MonoBehaviour:
   launchVisualizer: {fileID: 1637452433}
   spawnSystem: {fileID: 944582465}
   maxDragDistance: 2
+  minLaunchForce: 0.5
+  maxLaunchForce: 1
+  dragSensitivity: 0.0025
 --- !u!4 &1637452432
 Transform:
   m_ObjectHideFlags: 0
@@ -2348,6 +2351,8 @@ MonoBehaviour:
   maxDistance: 20
   lineHeightOffset: 1.5
   lineOffsetAnimSpeed: 1
+  maxAarrowSize: 1.2
+  minAarrowSize: 0.5
   arrowLineMat: {fileID: 2100000, guid: 8f902fea23cb2f24183b310db64248f2, type: 2}
 --- !u!1 &1731312097
 GameObject:
