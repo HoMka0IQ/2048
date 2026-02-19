@@ -21,7 +21,7 @@ public class LaunchVisualizer : MonoBehaviour
     }
     public void ShowArrowLine(Vector3 startPos, float launchForce)
     {
-        // Кидаємо промінь
+        
         if (Physics.Raycast(startPos, Vector3.forward, out RaycastHit hit, maxDistance))
         {
             endPoint = hit.point;
@@ -34,23 +34,23 @@ public class LaunchVisualizer : MonoBehaviour
         Vector3 direction = endPoint - startPos;
         float rayDistance = direction.magnitude;
 
-        // Довжина стрілки = launchForce, але не більше rayDistance
+        
         float arrowDistance = Mathf.Min(rayDistance, Mathf.Lerp(minAarrowSize,maxAarrowSize, launchForce) * 10);
 
-        // Позиція — середина стрілки
+        
         Vector3 midPoint = startPos + direction.normalized * (arrowDistance * 0.5f) - new Vector3(0, 0.49f, 0);
         arrowLine.position = midPoint;
 
-        // Обертання (як у тебе було)
+        
         if (direction != Vector3.zero)
             arrowLine.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
 
-        // Масштаб стрілки по X
+        
         Vector3 scale = arrowLine.localScale;
-        scale.x = arrowDistance / 10; // або твій коефіцієнт
+        scale.x = arrowDistance / 10;
         arrowLine.localScale = scale;
 
-        // Масштаб текстури
+        
         arrowLineMat.SetTextureScale("_MainTex", new Vector2(arrowDistance * lineHeightOffset, 1f));
 
         arrowLine.gameObject.SetActive(true);
@@ -60,7 +60,7 @@ public class LaunchVisualizer : MonoBehaviour
         if (arrowLine.gameObject.activeSelf == false)
             return;
 
-        arrowLineMat.mainTextureOffset = new Vector2(Time.time * -lineOffsetAnimSpeed, 0); // animate texture
+        arrowLineMat.mainTextureOffset = new Vector2(Time.time * -lineOffsetAnimSpeed, 0);
     }
 
     public void Hide()

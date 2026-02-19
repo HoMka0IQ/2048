@@ -29,7 +29,7 @@ public class MergeExecutor : MonoBehaviour
 
         rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
 
-        // випадковий поворот
+        
         Vector3 randomTorque = Random.insideUnitSphere * 5f;
         rb.AddTorque(randomTorque, ForceMode.Impulse);
 

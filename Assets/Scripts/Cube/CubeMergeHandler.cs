@@ -42,7 +42,6 @@ public class CubeMergeHandler : MonoBehaviour
 
     private void TryMerge(CubeMergeHandler other)
     {
-        // merge only once (deterministic side)
         if (GetInstanceID() > other.GetInstanceID())
             return;
 

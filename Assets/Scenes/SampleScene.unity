@@ -537,6 +537,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverMenu: {fileID: 1346121162}
+  scoreText: {fileID: 1211779065}
+  scoreSystem: {fileID: 188924603}
 --- !u!114 &307915675
 MonoBehaviour:
   m_ObjectHideFlags: 0
